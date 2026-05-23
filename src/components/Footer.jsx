@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
-import { MdConstruction } from 'react-icons/md';
+import logo from '../assets/logo.png';
 import './Footer.css';
 
 export default function Footer() {
@@ -9,9 +9,9 @@ export default function Footer() {
       <div className="footer-inner">
         <div className="footer-brand">
           <Link to="/" className="footer-logo">
-            <MdConstruction className="footer-logo-icon" /> Hire<b>Mee</b>
+            <img src={logo} alt="Lovito" className="footer-logo-img" /> Lovito
           </Link>
-          <p>India's #1 on-demand construction vehicle booking platform. Book JCBs, Cranes, Tippers & more — instantly.</p>
+          <p>A premium editor workplace where customers find verified editors, book projects, upload files, manage revisions, and download final work.</p>
           <div className="footer-social">
             <a href="#" aria-label="Twitter"><FaTwitter /></a>
             <a href="#" aria-label="Instagram"><FaInstagram /></a>
@@ -32,25 +32,25 @@ export default function Footer() {
 
         <div className="footer-col">
           <h4>For Customers</h4>
-          <Link to="/browse">Browse Vehicles</Link>
-          <Link to="/orders">My Orders</Link>
-          <Link to="#">HireMee Reviews</Link>
-          <Link to="#">Categories Near You</Link>
+          <Link to="/browse">Find Editors</Link>
+          <Link to="/customer">Customer Dashboard</Link>
+          <Link to="#">Lovito Reviews</Link>
+          <Link to="#">Editing Categories</Link>
           <Link to="#">Contact Us</Link>
         </div>
 
         <div className="footer-col">
           <h4>For Professionals</h4>
-          <Link to="/login">Register as Operator</Link>
+          <Link to="/login">Register as Editor</Link>
           <Link to="#">Partner with Us</Link>
-          <Link to="#">Operator App</Link>
-          <Link to="#">Safety Guidelines</Link>
+          <Link to="/editor">Editor Panel</Link>
+          <Link to="#">Delivery Guidelines</Link>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p>* As on December 31, 2024</p>
-        <p>© Copyright 2026 HireMee Technologies India Limited. All rights reserved.</p>
+        <p>* Static demo workplace for editor booking flows.</p>
+        <p>© Copyright 2026 Lovito Technologies. All rights reserved.</p>
       </div>
     </footer>
   );

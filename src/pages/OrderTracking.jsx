@@ -10,18 +10,20 @@ export default function OrderTracking() {
   const advanceStage = useStore(s => s.advanceStage);
 
   const order = orders.find(o => o.id === id);
+  const orderStage = order?.stage;
+  const finalStage = order?.stages.length - 1;
 
   // Auto-advance stages for demo (simulates real-time updates)
   useEffect(() => {
-    if (!order || order.stage >= order.stages.length - 1) return;
+    if (!order || orderStage >= finalStage) return;
     const timer = setTimeout(() => advanceStage(id), 4000);
     return () => clearTimeout(timer);
-  }, [order?.stage, id]);
+  }, [advanceStage, finalStage, id, order, orderStage]);
 
   if (!order) return (
     <div className="not-found">
-      <p>Order not found.</p>
-      <button onClick={() => navigate('/orders')}>View All Orders</button>
+      <p>Booking not found.</p>
+      <button onClick={() => navigate('/orders')}>View All Bookings</button>
     </div>
   );
 
@@ -29,14 +31,14 @@ export default function OrderTracking() {
 
   return (
     <div className="tracking-page">
-      <button className="back-btn" onClick={() => navigate('/orders')}>← My Orders</button>
+      <button className="back-btn" onClick={() => navigate('/orders')}>← My Bookings</button>
 
       <div className="tracking-layout">
         {/* Left: Status */}
         <div className="tracking-main">
           <div className="order-header">
             <div>
-              <div className="order-id">Order #{order.id}</div>
+              <div className="order-id">Booking #{order.id}</div>
               <div className="order-time">Placed at {order.placedAt}</div>
             </div>
             <div className={`status-badge ${isComplete ? 'complete' : 'active'}`}>
@@ -66,37 +68,37 @@ export default function OrderTracking() {
           {/* Booking Details */}
           <div className="booking-summary">
             <h3>Booking Details</h3>
-            <div className="bs-row"><span>📍 Location</span><strong>{order.booking.location}</strong></div>
+            <div className="bs-row"><span>Brief</span><strong>{order.booking.location}</strong></div>
             <div className="bs-row"><span>📅 Date</span><strong>{order.booking.date}</strong></div>
-            <div className="bs-row"><span>⏱ Duration</span><strong>{order.booking.duration} {order.vehicle.unit === 'hr' ? 'hrs' : 'trips'}</strong></div>
+            <div className="bs-row"><span>Quantity</span><strong>{order.booking.duration}</strong></div>
             <div className="bs-row total"><span>💰 Total</span><strong>₹{order.booking.total?.toLocaleString()}</strong></div>
           </div>
         </div>
 
-        {/* Right: Operator Card */}
+        {/* Right: Editor Card */}
         <div className="operator-card">
-          <h3>Your Operator</h3>
-          <div className="op-avatar">👷</div>
+          <h3>Your Editor</h3>
+          <div className="op-avatar">LV</div>
           <div className="op-name">{order.operator?.name ?? 'Assigning...'}</div>
           <div className="op-rating">⭐ {order.operator?.rating ?? '-'}</div>
           <div className="op-vehicle">{order.operator?.vehicle ?? ''}</div>
           {order.operator?.phone ? (
-            <a href={`tel:${order.operator.phone}`} className="call-btn">📞 Call Operator</a>
+            <a href={`tel:${order.operator.phone}`} className="call-btn">Contact Editor</a>
           ) : (
-            <div className="call-btn disabled">📞 Operator being assigned</div>
+            <div className="call-btn disabled">Editor being assigned</div>
           )}
 
           <div className="vehicle-info">
-            <div className="vi-icon">🚜</div>
+            <div className="vi-icon">✦</div>
             <div>
-              <strong>{order.vehicle?.name ?? 'Vehicle'}</strong>
+              <strong>{order.vehicle?.name ?? 'Service'}</strong>
               <p>{order.vehicle?.desc ?? ''}</p>
             </div>
           </div>
 
           {!isComplete && (
             <div className="eta-box">
-              <div className="eta-label">Estimated Arrival</div>
+              <div className="eta-label">Estimated Update</div>
               <div className="eta-time">~{Math.max(5, (order.stages.length - 1 - order.stage) * 8)} mins</div>
             </div>
           )}

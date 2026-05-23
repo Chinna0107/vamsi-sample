@@ -28,7 +28,7 @@ export default function AdminOrders() {
   return (
     <div className="admin-page">
       <div className="admin-header">
-        <div><h1>Order Management</h1><p>Assign workers and manage all bookings</p></div>
+        <div><h1>Booking Management</h1><p>Assign editors and manage all customer bookings</p></div>
       </div>
 
       <div className="filter-tabs">
@@ -41,14 +41,14 @@ export default function AdminOrders() {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="empty-msg">No orders in this category.</div>
+        <div className="empty-msg">No bookings in this category.</div>
       ) : (
         <div className="orders-table-wrap">
           <table className="admin-table full">
             <thead>
               <tr>
-                <th>Order ID</th><th>Vehicle</th><th>Customer</th><th>Location</th>
-                <th>Date</th><th>Amount</th><th>Status</th><th>Operator</th><th>Actions</th>
+                <th>Booking ID</th><th>Service</th><th>Customer</th><th>Brief</th>
+                <th>Date</th><th>Amount</th><th>Status</th><th>Editor</th><th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -89,8 +89,8 @@ export default function AdminOrders() {
       {assignModal && (
         <div className="modal-overlay" onClick={() => setAssignModal(null)}>
           <div className="modal" onClick={e => e.stopPropagation()}>
-            <h3>Assign Worker</h3>
-            <p>Select an available operator for this job</p>
+            <h3>Assign Editor</h3>
+            <p>Select an available editor for this project</p>
             <div className="worker-options">
               {workers.map(w => (
                 <button
@@ -104,7 +104,7 @@ export default function AdminOrders() {
                     <strong>{w.name}</strong>
                     <span>{w.vehicle}</span>
                     <span>
-                      <HiStar style={{ width: 11, height: 11, color: '#f59e0b' }} /> {w.rating} · {w.jobsDone} jobs
+                      <HiStar style={{ width: 11, height: 11, color: '#f59e0b' }} /> {w.rating} · {w.jobsDone} projects
                     </span>
                   </div>
                   <span className={`avail-badge ${w.available ? 'on' : 'off'}`}>

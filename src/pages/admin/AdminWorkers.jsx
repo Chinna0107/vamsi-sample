@@ -1,7 +1,6 @@
 import { useAuthStore } from '../../store/useAuthStore';
 import { useStore } from '../../store/useStore';
-import { HiStar, HiPhone } from 'react-icons/hi';
-import { MdDirectionsCar } from 'react-icons/md';
+import { HiBriefcase, HiPhone, HiStar } from 'react-icons/hi';
 import './Admin.css';
 
 export default function AdminWorkers() {
@@ -13,7 +12,7 @@ export default function AdminWorkers() {
   return (
     <div className="admin-page">
       <div className="admin-header">
-        <div><h1>Worker Management</h1><p>Manage operators and their availability</p></div>
+        <div><h1>Editor Management</h1><p>Manage editors, portfolios, availability, and live projects</p></div>
       </div>
 
       <div className="workers-grid">
@@ -30,7 +29,7 @@ export default function AdminWorkers() {
               </div>
               <h3>{w.name}</h3>
               <p className="wc-vehicle">
-                <MdDirectionsCar style={{ width: 14, height: 14, verticalAlign: 'middle', marginRight: 4 }} />
+                <HiBriefcase style={{ width: 14, height: 14, verticalAlign: 'middle', marginRight: 4 }} />
                 {w.vehicle}
               </p>
               <p className="wc-phone">
@@ -44,12 +43,12 @@ export default function AdminWorkers() {
                   </strong>
                   <span>Rating</span>
                 </div>
-                <div><strong>{w.jobsDone}</strong><span>Jobs Done</span></div>
+                <div><strong>{w.jobsDone}</strong><span>Projects</span></div>
                 <div><strong>{workerOrders.length}</strong><span>On Platform</span></div>
               </div>
               {activeJob && (
                 <div className="active-job-badge">
-                  🔴 On Job: {activeJob.vehicle.name}
+                  On project: {activeJob.vehicle.name}
                 </div>
               )}
               <button

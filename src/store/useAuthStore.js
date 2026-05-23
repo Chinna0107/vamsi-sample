@@ -1,13 +1,12 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-// Seeded demo accounts
 const DEMO_USERS = [
-  { id: 'a1', email: 'admin@hiremee.in', password: 'admin123', role: 'admin', name: 'Admin User', phone: '+91 98000 00001' },
-  { id: 'w1', email: 'ravi@hiremee.in', password: 'worker123', role: 'worker', name: 'Ravi Kumar', phone: '+91 98765 43210', vehicle: 'JCB • KA 05 AB 1234', rating: 4.8, jobsDone: 142, available: true },
-  { id: 'w2', email: 'suresh@hiremee.in', password: 'worker123', role: 'worker', name: 'Suresh Reddy', phone: '+91 97654 32109', vehicle: 'Crane • AP 09 CD 5678', rating: 4.6, jobsDone: 98, available: true },
-  { id: 'w3', email: 'mohan@hiremee.in', password: 'worker123', role: 'worker', name: 'Mohan Das', phone: '+91 96543 21098', vehicle: 'Tipper • TN 07 EF 9012', rating: 4.9, jobsDone: 210, available: false },
-  { id: 'c1', email: 'customer@hiremee.in', password: 'cust123', role: 'customer', name: 'Arjun Sharma', phone: '+91 95432 10987' },
+  { id: 'a1', email: 'admin@lovito.com', password: 'admin123', role: 'admin', name: 'Lovito Admin', phone: '+91 98000 00001' },
+  { id: 'w1', email: 'maya@lovito.com', password: 'editor123', role: 'worker', name: 'Maya Stone', phone: '+91 98765 43210', vehicle: 'Brand films and social ads', rating: 4.9, jobsDone: 142, available: true },
+  { id: 'w2', email: 'arjun@lovito.com', password: 'editor123', role: 'worker', name: 'Arjun Mehta', phone: '+91 97654 32109', vehicle: 'YouTube and podcast editing', rating: 4.8, jobsDone: 98, available: true },
+  { id: 'w3', email: 'nora@lovito.com', password: 'editor123', role: 'worker', name: 'Nora Quinn', phone: '+91 96543 21098', vehicle: 'Wedding cinematic edits', rating: 5.0, jobsDone: 210, available: false },
+  { id: 'c1', email: 'customer@lovito.com', password: 'customer123', role: 'customer', name: 'Rhea Kapoor', phone: '+91 95432 10987' },
 ];
 
 export const useAuthStore = create(
@@ -43,6 +42,6 @@ export const useAuthStore = create(
       getWorkers: () => get().users.filter(u => u.role === 'worker'),
       getCustomers: () => get().users.filter(u => u.role === 'customer'),
     }),
-    { name: 'hiremee-auth' }
+    { name: 'lovito-auth' }
   )
 );

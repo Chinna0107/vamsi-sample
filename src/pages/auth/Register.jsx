@@ -3,15 +3,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
 import {
   HiMail, HiLockClosed, HiUser, HiPhone, HiArrowRight,
-  HiIdentification, HiTruck, HiBriefcase,
+  HiIdentification, HiBriefcase,
 } from 'react-icons/hi';
-import { MdConstruction, MdEngineering } from 'react-icons/md';
+import { MdEngineering } from 'react-icons/md';
+import logo from '../../assets/logo.png';
 import './Auth.css';
 
 const VEHICLE_TYPES = [
-  'JCB / Backhoe', 'Excavator', 'Bulldozer', 'Crane', 'Dump Truck / Tipper',
-  'Road Roller', 'Concrete Mixer', 'Forklift', 'Tractor', 'Water Tanker',
-  'Plumber', 'Electrician', 'Carpenter', 'Painter', 'AC Technician', 'Other',
+  'Social video editor', 'YouTube editor', 'Podcast editor', 'Brand film editor',
+  'Wedding film editor', 'Performance ad editor', 'Motion graphics editor',
+  'Colorist', 'Sound editor', 'VFX cleanup editor', 'Other',
 ];
 
 const EXPERIENCE_OPTIONS = ['Less than 1 year', '1–3 years', '3–5 years', '5–10 years', '10+ years'];
@@ -47,7 +48,7 @@ export default function Register() {
   const handleWorkerNext = (e) => {
     e.preventDefault();
     setError('');
-    if (!workerForm.vehicleType) { setError('Please select a service/vehicle type'); return; }
+    if (!workerForm.vehicleType) { setError('Please select an editing service type'); return; }
     if (!workerForm.licenseNo) { setError('License/ID number is required'); return; }
     setStep(3);
   };
@@ -77,13 +78,13 @@ export default function Register() {
     navigate('/login');
   };
 
-  const STEPS = role === 'worker' ? ['Role', 'Details', 'Worker Info', 'OTP'] : ['Role', 'Details', 'OTP'];
+  const STEPS = role === 'worker' ? ['Role', 'Details', 'Editor Info', 'OTP'] : ['Role', 'Details', 'OTP'];
   const currentStep = step;
 
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <Link to="/" className="auth-brand"><MdConstruction className="auth-brand-icon" /> Hire<b>Mee</b></Link>
+        <Link to="/" className="auth-brand"><img src={logo} alt="Lovito" className="auth-logo-img" /> Lovito</Link>
 
         {/* Step indicator */}
         {step > 0 && (
@@ -100,18 +101,18 @@ export default function Register() {
         {/* Step 0: Role Selection */}
         {step === 0 && (
           <>
-            <h1>Join HireMee</h1>
-            <p className="auth-sub">How would you like to use HireMee?</p>
+            <h1>Join Lovito</h1>
+            <p className="auth-sub">How would you like to use Lovito?</p>
             <div className="role-cards">
               <button className="role-card" onClick={() => handleRoleSelect('customer')}>
-                <div className="rc-icon customer">🏗️</div>
+                <div className="rc-icon customer">LV</div>
                 <strong>I'm a Customer</strong>
-                <span>Book vehicles & services for my projects</span>
+                <span>Book editors and manage creative projects</span>
               </button>
               <button className="role-card" onClick={() => handleRoleSelect('worker')}>
-                <div className="rc-icon worker">👷</div>
-                <strong>I'm a Worker</strong>
-                <span>Offer my services & earn money</span>
+                <div className="rc-icon worker">ED</div>
+                <strong>I'm an Editor</strong>
+                <span>Accept projects, upload work, and earn</span>
               </button>
             </div>
             <p className="auth-switch">Already have an account? <Link to="/login">Login</Link></p>
@@ -121,7 +122,7 @@ export default function Register() {
         {/* Step 1: Basic Details */}
         {step === 1 && (
           <>
-            <h1>{role === 'worker' ? 'Worker Registration' : 'Create Account'}</h1>
+            <h1>{role === 'worker' ? 'Editor Registration' : 'Create Account'}</h1>
             <p className="auth-sub">Enter your basic details</p>
             <form onSubmit={handleFormSubmit}>
               <label>Full Name
@@ -141,7 +142,7 @@ export default function Register() {
               </label>
               {error && <div className="auth-error">⚠️ {error}</div>}
               <button type="submit" className="auth-submit" disabled={loading}>
-                <span>{role === 'worker' ? 'Next: Worker Details' : 'Send OTP'}</span>
+                <span>{role === 'worker' ? 'Next: Editor Details' : 'Send OTP'}</span>
                 <HiArrowRight style={{ width: 16, height: 16 }} />
               </button>
               <button type="button" className="auth-back" onClick={() => { setStep(0); setError(''); }}>← Back</button>
@@ -149,23 +150,23 @@ export default function Register() {
           </>
         )}
 
-        {/* Step 2: Worker Details */}
+        {/* Step 2: Editor Details */}
         {step === 2 && (
           <>
-            <h1>Worker Details</h1>
-            <p className="auth-sub">Tell us about your skills & equipment</p>
+            <h1>Editor Details</h1>
+            <p className="auth-sub">Tell us about your editing skills and portfolio</p>
             <form onSubmit={handleWorkerNext}>
-              <label>Service / Vehicle Type
+              <label>Editing Service Type
                 <div className="input-wrap">
-                  <HiTruck className="input-icon" />
+                  <HiBriefcase className="input-icon" />
                   <select className="auth-select" value={workerForm.vehicleType} onChange={e => setWorkerForm(p => ({ ...p, vehicleType: e.target.value }))} required>
                     <option value="">Select type...</option>
                     {VEHICLE_TYPES.map(v => <option key={v} value={v}>{v}</option>)}
                   </select>
                 </div>
               </label>
-              <label>License / Vehicle Reg. No.
-                <div className="input-wrap"><HiIdentification className="input-icon" /><input placeholder="KA 05 AB 1234" {...w('licenseNo')} required /></div>
+              <label>Portfolio / Profile ID
+                <div className="input-wrap"><HiIdentification className="input-icon" /><input placeholder="Portfolio link or editor ID" {...w('licenseNo')} required /></div>
               </label>
               <label>Years of Experience
                 <div className="input-wrap">
@@ -176,10 +177,10 @@ export default function Register() {
                   </select>
                 </div>
               </label>
-              <label>Aadhar / ID Number
-                <div className="input-wrap"><HiIdentification className="input-icon" /><input placeholder="XXXX XXXX XXXX" {...w('aadhar')} /></div>
+              <label>ID Number
+                <div className="input-wrap"><HiIdentification className="input-icon" /><input placeholder="Verification ID" {...w('aadhar')} /></div>
               </label>
-              <label>Current Address
+              <label>Current City
                 <div className="input-wrap">
                   <MdEngineering className="input-icon" />
                   <input placeholder="City, State" {...w('address')} />
@@ -232,26 +233,26 @@ export default function Register() {
         <div className="av-content">
           {role === 'worker' ? (
             <>
-              <div className="av-icon">👷</div>
-              <h2>Earn with HireMee</h2>
-              <p>Join thousands of verified workers earning daily on HireMee.</p>
+              <div className="av-icon">ED</div>
+              <h2>Earn with Lovito</h2>
+              <p>Join verified editors accepting premium creative projects.</p>
               <div className="av-features">
-                <div>✅ Get jobs near your location</div>
-                <div>✅ Instant payment on completion</div>
-                <div>✅ Build your reputation & rating</div>
-                <div>✅ Flexible working hours</div>
+                <div>Accept projects from one panel</div>
+                <div>Upload review and final files</div>
+                <div>Track earnings and payouts</div>
+                <div>Grow portfolio ratings</div>
               </div>
             </>
           ) : (
             <>
-              <div className="av-icon">🚜</div>
-              <h2>Join 12M+ customers on HireMee</h2>
-              <p>Get verified operators, live tracking, and instant booking for all your construction needs.</p>
+              <div className="av-icon">LV</div>
+              <h2>Book trusted editors on Lovito</h2>
+              <p>Upload files, track projects, request revisions, and download final edits.</p>
               <div className="av-features">
-                <div>✅ Verified & insured operators</div>
-                <div>✅ Real-time GPS tracking</div>
-                <div>✅ Transparent pricing</div>
-                <div>✅ 24/7 support</div>
+                <div>Verified editor portfolios</div>
+                <div>Real-time project chat</div>
+                <div>Transparent pricing</div>
+                <div>Revision management</div>
               </div>
             </>
           )}

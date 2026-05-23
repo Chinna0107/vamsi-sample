@@ -24,7 +24,7 @@ export default function Cart() {
       placeOrder(item.vehicle, item.booking, customer);
     });
     clearCart();
-    navigate('/orders');
+    navigate('/customer');
   };
 
   if (cart.length === 0) {
@@ -32,9 +32,9 @@ export default function Cart() {
       <div className="cart-empty">
         <HiShoppingCart className="empty-icon" />
         <h2>Your cart is empty</h2>
-        <p>Add vehicles to your cart to book them together</p>
+        <p>Add editor services to your cart to book them together</p>
         <button className="btn-primary" onClick={() => navigate('/browse')}>
-          Browse Vehicles
+          Find Editors
         </button>
       </div>
     );
@@ -56,9 +56,9 @@ export default function Cart() {
                 <h3>{item.vehicle.name}</h3>
                 <p>{item.vehicle.desc}</p>
                 <div className="ci-booking">
-                  <span>📍 {item.booking.location}</span>
+                  <span>Brief: {item.booking.location}</span>
                   <span>📅 {item.booking.date}</span>
-                  <span>⏱ {item.booking.duration} {item.vehicle.unit}</span>
+                  <span>Qty {item.booking.duration} {item.vehicle.unit}</span>
                 </div>
               </div>
               <div className="ci-price">
@@ -72,7 +72,7 @@ export default function Cart() {
         </div>
 
         <div className="cart-summary">
-          <h3>Order Summary</h3>
+          <h3>Booking Summary</h3>
           <div className="cs-row">
             <span>Items ({cart.length})</span>
             <span>₹{total.toLocaleString()}</span>

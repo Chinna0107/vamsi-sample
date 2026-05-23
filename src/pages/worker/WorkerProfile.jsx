@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useAuthStore } from '../../store/useAuthStore';
 import { HiUser, HiPhone, HiMail, HiStar, HiBriefcase, HiLogout } from 'react-icons/hi';
-import { MdDirectionsCar } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
 export default function WorkerProfile() {
@@ -17,9 +16,9 @@ export default function WorkerProfile() {
     { Icon: HiUser,          label: 'Full Name',  val: user.name },
     { Icon: HiPhone,         label: 'Phone',      val: user.phone },
     { Icon: HiMail,          label: 'Email',      val: user.email },
-    { Icon: MdDirectionsCar, label: 'Vehicle',    val: user.vehicle },
+    { Icon: HiBriefcase,     label: 'Speciality', val: user.vehicle },
     { Icon: HiStar,          label: 'Rating',     val: `${user.rating} ★` },
-    { Icon: HiBriefcase,     label: 'Jobs Done',  val: user.jobsDone },
+    { Icon: HiBriefcase,     label: 'Projects',   val: user.jobsDone },
   ];
 
   return (
@@ -33,7 +32,7 @@ export default function WorkerProfile() {
       <div className="profile-hero">
         <div className="profile-avatar">{user.name.charAt(0)}</div>
         <h2>{user.name}</h2>
-        <span className="profile-role">Worker</span>
+        <span className="profile-role">Editor</span>
         <div className="avail-toggle" style={{ justifyContent: 'center', marginTop: 12 }}>
           <span>Status:</span>
           <button

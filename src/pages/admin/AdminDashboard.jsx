@@ -26,18 +26,18 @@ export default function AdminDashboard() {
   const recent = orders.slice(0, 5);
 
   const STAT_CARDS = [
-    { label: 'Total Orders',       val: stats.total,                           Icon: HiClipboardList,  cls: 'orange' },
+    { label: 'Bookings',           val: stats.total,                           Icon: HiClipboardList,  cls: 'orange' },
     { label: 'Pending',            val: stats.pending,                         Icon: MdPendingActions, cls: 'yellow' },
-    { label: 'Active Jobs',        val: stats.active,                          Icon: HiLightningBolt,  cls: 'blue'   },
+    { label: 'Active Projects',    val: stats.active,                          Icon: HiLightningBolt,  cls: 'blue'   },
     { label: 'Completed',          val: stats.completed,                       Icon: HiCheckCircle,    cls: 'green'  },
     { label: 'Revenue',            val: `₹${stats.revenue.toLocaleString()}`,  Icon: HiCurrencyRupee,  cls: 'purple' },
-    { label: 'Workers Online',     val: `${stats.availableWorkers}/${workers.length}`, Icon: HiUsers,  cls: 'teal'   },
+    { label: 'Editors Online',     val: `${stats.availableWorkers}/${workers.length}`, Icon: HiUsers,  cls: 'teal'   },
   ];
 
   return (
     <div className="admin-page">
       <div className="dash-welcome">
-        <p>Here's what's happening today 👋</p>
+        <p>Bookings, customers, editors, reports, and notifications are ready to manage.</p>
       </div>
 
       {/* Stats */}
@@ -56,10 +56,11 @@ export default function AdminDashboard() {
       {/* Quick Actions */}
       <div className="quick-actions">
         {[
-          { label: 'Manage Orders',    path: '/admin/orders',    cls: 'orange' },
+          { label: 'Booking Reports',  path: '/admin/reports',   cls: 'orange' },
           { label: 'View Customers',   path: '/admin/customers', cls: 'blue'   },
-          { label: 'Manage Workers',   path: '/admin/workers',   cls: 'green'  },
-          { label: 'Payments',         path: '/admin/payments',  cls: 'purple' },
+          { label: 'Manage Editors',   path: '/admin/workers',   cls: 'green'  },
+          { label: 'Payment Requests', path: '/admin/payment-requests', cls: 'teal' },
+          { label: 'Send Notifications', path: '/admin/notifications', cls: 'purple' },
         ].map(({ label, path, cls }) => (
           <button key={path} className={`qa-btn ${cls}`} onClick={() => navigate(path)}>
             {label} <HiArrowRight style={{ width: 14, height: 14 }} />
@@ -70,7 +71,7 @@ export default function AdminDashboard() {
       {/* Recent Orders as Cards */}
       <div className="admin-section">
         <div className="as-header">
-          <h2>Recent Orders</h2>
+          <h2>Recent Bookings</h2>
           <button onClick={() => navigate('/admin/orders')}>View all <HiArrowRight style={{ width: 13, height: 13 }} /></button>
         </div>
         {recent.length === 0 ? (
@@ -100,7 +101,7 @@ export default function AdminDashboard() {
       {/* Workers */}
       <div className="admin-section" style={{ marginTop: 16 }}>
         <div className="as-header">
-          <h2>Workers</h2>
+          <h2>Editors</h2>
           <button onClick={() => navigate('/admin/workers')}>Manage <HiArrowRight style={{ width: 13, height: 13 }} /></button>
         </div>
         <div className="worker-list">

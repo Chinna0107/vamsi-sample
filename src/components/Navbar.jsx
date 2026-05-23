@@ -1,39 +1,27 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
-import { useStore } from '../store/useStore';
+import logo from '../assets/logo.png';
 import {
-  HiChevronDown, HiChevronUp,
-  HiClipboardList, HiCog, HiLogout,
-  HiShoppingCart, HiLocationMarker, HiUser,
+  HiChevronDown, HiChevronUp, HiClipboardList, HiLogout,
+  HiViewGrid,
 } from 'react-icons/hi';
-import { MdConstruction, MdEngineering } from 'react-icons/md';
-import { GiCrane, GiPickelhaube } from 'react-icons/gi';
-import { FaTractor, FaRoad, FaSpa, FaLeaf } from 'react-icons/fa';
-import { TbTruckDelivery } from 'react-icons/tb';
 import './Navbar.css';
 
-const CAT_NAV = [
-  { id: 'excavation',  label: 'Excavation',  Icon: GiPickelhaube  },
-  { id: 'transport',   label: 'Transport',   Icon: TbTruckDelivery },
-  { id: 'road',        label: 'Road',        Icon: FaRoad          },
-  { id: 'lifting',     label: 'Lifting',     Icon: GiCrane         },
-  { id: 'agricultural',label: 'Agricultural',Icon: FaTractor       },
-  { id: 'native',      label: 'Native',      Icon: FaLeaf          },
-  { id: 'beauty',      label: 'Beauty',      Icon: FaSpa           },
-  { id: 'other',       label: 'Other',       Icon: MdEngineering   },
+const NAV_LINKS = [
+  { label: 'Homepage', to: '/' },
+  { label: 'Find Editors', to: '/browse' },
+  { label: 'Services', to: '/services' },
+  { label: 'Pricing', to: '/pricing' },
+  { label: 'Portfolio', to: '/portfolio' },
+  { label: 'Support', to: '/support' },
 ];
 
 export default function Navbar() {
   const { user, logout } = useAuthStore();
-  const cartCount = useStore(s => s.cart.length);
   const navigate = useNavigate();
-  const location = useLocation();
   const [dropOpen, setDropOpen] = useState(false);
-  const [loc, setLoc] = useState('');
   const dropRef = useRef();
-
-  const isHome = location.pathname === '/';
 
   useEffect(() => {
     const handler = (e) => { if (!dropRef.current?.contains(e.target)) setDropOpen(false); };
@@ -41,45 +29,39 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const handleLogout = () => { logout(); navigate('/'); setDropOpen(false); };
+  const handleLink = (to) => {
+    if (to.includes('#')) {
+      const [path, id] = to.split('#');
+      if (window.location.pathname !== path) navigate(path);
+      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 80);
+      return;
+    }
+    navigate(to);
+  };
 
-  useEffect(() => {
-    if (!navigator.geolocation) return;
-    navigator.geolocation.getCurrentPosition(
-      async ({ coords }) => {
-        try {
-          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${coords.latitude}&lon=${coords.longitude}&format=json`);
-          const data = await res.json();
-          if (data.address) setLoc(data.address.suburb || data.address.city_district || data.address.city || 'Unknown');
-        } catch { setLoc('Location unavailable'); }
-      },
-      () => setLoc('Enable location')
-    );
-  }, []);
+  const handleLogout = () => { logout(); navigate('/'); setDropOpen(false); };
+  const panelPath = user?.role === 'admin' ? '/admin' : user?.role === 'worker' ? '/editor' : '/customer';
 
   return (
     <nav className="navbar">
-      {/* ── Main Row ── */}
       <div className="nav-inner">
-        <div className="nav-left">
-          <Link to="/" className="brand">
-            <MdConstruction className="brand-logo" />
-            <span>Hire<b>Mee</b></span>
-          </Link>
-          <div className="location-row">
-            <HiLocationMarker className="loc-icon" />
-            <span className="location-text">{loc || 'Detecting...'}</span>
-          </div>
+        <Link to="/" className="brand">
+          <img src={logo} alt="Lovito" className="brand-logo-img" />
+          <span>Lovito</span>
+        </Link>
+
+        <div className="nav-links">
+          {NAV_LINKS.map(item => (
+            <button key={item.label} onClick={() => handleLink(item.to)}>{item.label}</button>
+          ))}
         </div>
 
         <div className="nav-right">
-          <button className="cart-btn" onClick={() => navigate('/cart')}>
-            <HiShoppingCart className="cart-icon" />
-            <span className="cart-label">Cart</span>
-            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
-          </button>
+          <button className="contact-link" onClick={() => handleLink('/contact')}>Contact</button>
+          {!user && (
+            <Link to="/login" className="btn-nav-primary">Signin</Link>
+          )}
 
-          {/* Only show after login */}
           {user && (
             <div className="user-menu" ref={dropRef}>
               <button className="avatar-btn" onClick={() => setDropOpen(o => !o)}>
@@ -91,25 +73,14 @@ export default function Navbar() {
                 <div className="dropdown">
                   <div className="drop-header">
                     <strong>{user.name}</strong>
-                    <span className={`role-tag ${user.role}`}>{user.role}</span>
+                    <span className={`role-tag ${user.role}`}>{user.role === 'worker' ? 'editor' : user.role}</span>
                   </div>
                   <div className="drop-email">{user.email}</div>
                   <hr />
-                  {user.role === 'customer' && (
-                    <Link to="/orders" className="drop-item" onClick={() => setDropOpen(false)}>
-                      <HiClipboardList className="drop-icon" /> My Orders
-                    </Link>
-                  )}
-                  {user.role === 'admin' && (
-                    <Link to="/admin" className="drop-item" onClick={() => setDropOpen(false)}>
-                      <HiCog className="drop-icon" /> Admin Panel
-                    </Link>
-                  )}
-                  {user.role === 'worker' && (
-                    <Link to="/worker" className="drop-item" onClick={() => setDropOpen(false)}>
-                      <HiCog className="drop-icon" /> My Jobs
-                    </Link>
-                  )}
+                  <Link to={panelPath} className="drop-item" onClick={() => setDropOpen(false)}>
+                    {user.role === 'customer' ? <HiClipboardList className="drop-icon" /> : <HiViewGrid className="drop-icon" />}
+                    {user.role === 'admin' ? 'Admin Panel' : user.role === 'worker' ? 'Editor Panel' : 'Customer Dashboard'}
+                  </Link>
                   <button className="drop-item logout" onClick={handleLogout}>
                     <HiLogout className="drop-icon" /> Logout
                   </button>
@@ -118,20 +89,6 @@ export default function Navbar() {
             </div>
           )}
         </div>
-      </div>
-
-      {/* ── Category Nav Row ── */}
-      <div className="cat-nav-row">
-        {CAT_NAV.map(({ id, label, Icon }) => (
-          <button
-            key={id}
-            className="cat-nav-item"
-            onClick={() => navigate(`/browse?cat=${id}`)}
-          >
-            <Icon className="cat-nav-icon" />
-            <span>{label}</span>
-          </button>
-        ))}
       </div>
     </nav>
   );

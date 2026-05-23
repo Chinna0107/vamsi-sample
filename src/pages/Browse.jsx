@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { categories, allVehicles } from '../data/vehicles';
+import { editors } from '../data/editors';
 import { useStore } from '../store/useStore';
 import { HiSearch, HiFilter, HiStar, HiClock, HiCheckCircle, HiShoppingCart, HiX, HiLocationMarker, HiCalendar } from 'react-icons/hi';
-import { GiCrane, GiBulldozer, GiRoad } from 'react-icons/gi';
+import { GiCrane } from 'react-icons/gi';
 import { TbTruckDelivery } from 'react-icons/tb';
 import { FaTractor, FaRoad } from 'react-icons/fa';
 import { MdConstruction, MdEngineering } from 'react-icons/md';
@@ -18,7 +19,7 @@ const CAT_ICONS = {
   other:        MdEngineering,
 };
 
-const FALLBACK = 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80';
+const FALLBACK = 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&q=80';
 
 export default function Browse() {
   const [params] = useSearchParams();
@@ -43,11 +44,6 @@ export default function Browse() {
     setTimeout(() => setAdded(null), 2000);
   };
 
-  useEffect(() => {
-    const cat = params.get('cat');
-    if (cat) setActiveCat(cat);
-  }, [params]);
-
   const filtered = allVehicles.filter(v => {
     const matchCat = activeCat === 'all' || v.category === activeCat;
     const matchSearch =
@@ -61,14 +57,14 @@ export default function Browse() {
       {/* Header */}
       <div className="browse-header">
         <div>
-          <h1>Book a Vehicle</h1>
-          <p>{filtered.length} vehicles available</p>
+          <h1>Find Editors</h1>
+          <p>{filtered.length} editor services available</p>
         </div>
         <div className="search-wrap">
           <HiSearch className="search-icon" />
           <input
             className="search-input"
-            placeholder="Search JCB, Crane, Tipper..."
+            placeholder="Search video, brand, podcast..."
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
@@ -78,7 +74,7 @@ export default function Browse() {
       {/* Category Tabs */}
       <div className="cat-tabs">
         <button className={activeCat === 'all' ? 'active' : ''} onClick={() => setActiveCat('all')}>
-          <MdConstruction className="tab-icon" /> All Vehicles
+          <MdConstruction className="tab-icon" /> All Editors
         </button>
         {categories.map(c => {
           const Icon = CAT_ICONS[c.id] || MdConstruction;
@@ -95,6 +91,29 @@ export default function Browse() {
       </div>
 
       {/* Grid */}
+      <section className="editor-profile-strip">
+        <div className="profile-strip-head">
+          <div>
+            <h2>Featured editor profiles</h2>
+            <p>Open a profile to see specialties, tools, portfolio highlights, and booking details.</p>
+          </div>
+          <button onClick={() => navigate('/portfolio')}>View all profiles</button>
+        </div>
+        <div className="profile-strip-grid">
+          {editors.map(editor => (
+            <article className="profile-mini-card" key={editor.id}>
+              <img src={editor.image} alt={editor.name} />
+              <div>
+                <h3>{editor.name}</h3>
+                <p>{editor.specialty}</p>
+                <span><HiStar /> {editor.rating} · {editor.projects} projects</span>
+                <button onClick={() => navigate(`/editors/${editor.id}`)}>More details</button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <div className="vehicles-grid">
         {filtered.map(v => (
           <div key={v.id} className="vehicle-card" onClick={() => navigate(`/book/${v.id}`)}>
@@ -138,7 +157,7 @@ export default function Browse() {
         {filtered.length === 0 && (
           <div className="empty-state">
             <HiFilter style={{ width: 40, height: 40, color: '#ddd', marginBottom: 12 }} />
-            <p>No vehicles found. Try a different search.</p>
+            <p>No editors found. Try a different search.</p>
           </div>
         )}
       </div>
@@ -148,7 +167,7 @@ export default function Browse() {
         <div className="modal-overlay" onClick={() => setCartModal(null)}>
           <div className="cart-modal" onClick={e => e.stopPropagation()}>
             <div className="cm-header">
-              <h3>Add to Cart</h3>
+              <h3>Add project to cart</h3>
               <button className="cm-close" onClick={() => setCartModal(null)}><HiX /></button>
             </div>
             <div className="cm-vehicle">
@@ -159,15 +178,15 @@ export default function Browse() {
               </div>
             </div>
             <label>
-              <span><HiLocationMarker className="cm-lbl-icon" /> Site Location</span>
-              <input placeholder="Enter site address" value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} />
+              <span><HiLocationMarker className="cm-lbl-icon" /> Project Notes</span>
+              <input placeholder="Editing style, references, output format" value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} />
             </label>
             <label>
               <span><HiCalendar className="cm-lbl-icon" /> Date</span>
               <input type="date" value={form.date} min={new Date().toISOString().split('T')[0]} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} />
             </label>
             <label>
-              <span>Duration ({cartModal.unit === 'hr' ? 'Hours' : 'Trips'})</span>
+              <span>Quantity</span>
               <div className="duration-ctrl">
                 <button onClick={() => setForm(f => ({ ...f, duration: Math.max(1, f.duration - 1) }))}>−</button>
                 <span>{form.duration}</span>

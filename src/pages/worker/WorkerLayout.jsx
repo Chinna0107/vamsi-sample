@@ -1,29 +1,45 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
-import { HiHome, HiClipboardList, HiClock, HiCurrencyRupee, HiUser } from 'react-icons/hi';
-import { MdConstruction } from 'react-icons/md';
+import { HiChatAlt2, HiHome, HiClipboardList, HiClock, HiCurrencyRupee, HiUser } from 'react-icons/hi';
+import logo from '../../assets/logo.png';
 import './Worker.css';
-
-const NAV = [
-  { to: '/worker',          icon: HiHome,           label: 'Home'    },
-  { to: '/worker/orders',   icon: HiClipboardList,  label: 'Orders'  },
-  { to: '/worker/history',  icon: HiClock,          label: 'History' },
-  { to: '/worker/wallet',   icon: HiCurrencyRupee,  label: 'Wallet'  },
-  { to: '/worker/profile',  icon: HiUser,           label: 'Profile' },
-];
 
 export default function WorkerLayout() {
   const user = useAuthStore(s => s.user);
+  const { pathname } = useLocation();
+  const base = pathname.startsWith('/editor') ? '/editor' : '/worker';
   if (!user) return null;
+
+  const NAV = [
+    { to: base, icon: HiHome, label: 'Dashboard' },
+    { to: `${base}/orders`, icon: HiClipboardList, label: 'Projects' },
+    { to: `${base}/history`, icon: HiClock, label: 'Uploads' },
+    { to: `${base}/wallet`, icon: HiCurrencyRupee, label: 'Earnings' },
+    { to: `${base}/chat`, icon: HiChatAlt2, label: 'Chat' },
+    { to: `${base}/profile`, icon: HiUser, label: 'Portfolio' },
+  ];
 
   return (
     <div className="worker-layout">
       <header className="worker-top-header">
         <div className="wth-brand">
-          <MdConstruction className="wth-logo-icon" />
-          <span>Hire<b>Mee</b></span>
-          <span className="wth-badge">Worker</span>
+          <img src={logo} alt="Lovito" className="wth-logo-img" />
+          <span>Lovito</span>
+          <span className="wth-badge">Editor</span>
         </div>
+        <nav className="worker-top-nav">
+          {NAV.map(({ to, icon: Icon, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={to === base}
+              className={({ isActive }) => `wtn-item ${isActive ? 'active' : ''}`}
+            >
+              <Icon className="wtn-icon" />
+              <span>{label}</span>
+            </NavLink>
+          ))}
+        </nav>
         <div className="wth-user">
           <div className="wth-avatar">{user.name.charAt(0)}</div>
           <div className="wth-info">
@@ -37,15 +53,15 @@ export default function WorkerLayout() {
       <div className="worker-content">
         <Outlet />
       </div>
-      <nav className="worker-bottom-nav">
+      <nav className="worker-mobile-nav">
         {NAV.map(({ to, icon: Icon, label }) => (
           <NavLink
             key={to}
             to={to}
-            end={to === '/worker'}
-            className={({ isActive }) => `wbn-item ${isActive ? 'active' : ''}`}
+            end={to === base}
+            className={({ isActive }) => `wmn-item ${isActive ? 'active' : ''}`}
           >
-            <Icon className="wbn-icon" />
+            <Icon className="wmn-icon" />
             <span>{label}</span>
           </NavLink>
         ))}

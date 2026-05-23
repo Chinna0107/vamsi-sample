@@ -1,6 +1,6 @@
 import { useAuthStore } from '../../store/useAuthStore';
 import { useStore } from '../../store/useStore';
-import { HiUsers, HiPhone, HiMail, HiShoppingCart } from 'react-icons/hi';
+import { HiPhone, HiMail } from 'react-icons/hi';
 import './Admin.css';
 
 export default function AdminCustomers() {
@@ -36,7 +36,7 @@ export default function AdminCustomers() {
                   <div className="cc-row"><HiPhone className="cc-icon" />{c.phone || '—'}</div>
                 </div>
                 <div className="cc-stats">
-                  <div><strong>{custOrders.length}</strong><span>Orders</span></div>
+                  <div><strong>{custOrders.length}</strong><span>Bookings</span></div>
                   <div><strong>₹{spent.toLocaleString()}</strong><span>Spent</span></div>
                   <div><strong>{custOrders.filter(o => o.status === 'completed').length}</strong><span>Completed</span></div>
                 </div>

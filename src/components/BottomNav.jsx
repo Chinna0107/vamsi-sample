@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
 import { useStore } from '../store/useStore';
 import {
-  HiHome, HiTruck, HiClipboardList, HiUser,
+  HiHome, HiSparkles, HiClipboardList, HiUser,
   HiChartBar, HiCollection, HiUsers, HiSearch,
   HiCog, HiLocationMarker,
 } from 'react-icons/hi';
@@ -10,21 +10,21 @@ import './BottomNav.css';
 
 const customerTabs = [
   { to: '/',       Icon: HiHome,          label: 'Home' },
-  { to: '/browse', Icon: HiTruck,         label: 'Book' },
-  { to: '/orders', Icon: HiClipboardList, label: 'Orders' },
+  { to: '/browse', Icon: HiSparkles,      label: 'Editors' },
+  { to: '/customer', Icon: HiClipboardList, label: 'Projects' },
   { to: '/login',  Icon: HiUser,          label: 'Account' },
 ];
 
 const adminTabs = [
   { to: '/admin',         Icon: HiChartBar,      label: 'Dashboard' },
-  { to: '/admin/orders',  Icon: HiCollection,    label: 'Orders' },
-  { to: '/admin/workers', Icon: HiUsers,         label: 'Workers' },
-  { to: '/browse',        Icon: HiSearch,        label: 'Browse' },
+  { to: '/admin/orders',  Icon: HiCollection,    label: 'Bookings' },
+  { to: '/admin/workers', Icon: HiUsers,         label: 'Editors' },
+  { to: '/browse',        Icon: HiSearch,        label: 'Find' },
 ];
 
 const workerTabs = [
-  { to: '/worker', Icon: HiCog, label: 'My Jobs' },
-  { to: '/browse', Icon: HiSearch, label: 'Browse' },
+  { to: '/editor', Icon: HiCog, label: 'Panel' },
+  { to: '/browse', Icon: HiSearch, label: 'Find' },
 ];
 
 export default function BottomNav() {
@@ -43,7 +43,7 @@ export default function BottomNav() {
 
   const resolvedTabs = tabs.map(t => {
     if (t.label === 'Account' && user)
-      return { ...t, to: '/orders', Icon: HiUser, label: user.name.split(' ')[0] };
+      return { ...t, to: user.role === 'customer' ? '/customer' : '/', Icon: HiUser, label: user.name.split(' ')[0] };
     return t;
   });
 

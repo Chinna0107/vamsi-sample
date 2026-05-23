@@ -9,26 +9,26 @@ export default function Orders() {
   if (orders.length === 0) return (
     <div className="orders-empty">
       <div className="empty-icon">📋</div>
-      <h2>No orders yet</h2>
-      <p>Book your first construction vehicle to get started.</p>
-      <button onClick={() => navigate('/browse')}>Browse Vehicles →</button>
+      <h2>No bookings yet</h2>
+      <p>Book your first editor to get started.</p>
+      <button onClick={() => navigate('/browse')}>Find Editors →</button>
     </div>
   );
 
   return (
     <div className="orders-page">
-      <h1>My Orders</h1>
+      <h1>My Bookings</h1>
       <div className="orders-list">
         {orders.map(order => {
           const isComplete = order.stage === order.stages.length - 1;
           return (
             <div key={order.id} className="order-item" onClick={() => navigate(`/track/${order.id}`)}>
               <div className="oi-left">
-                <div className="oi-icon">🚜</div>
+                <div className="oi-icon">LV</div>
                 <div>
                   <div className="oi-name">{order.vehicle.name}</div>
-                  <div className="oi-loc">📍 {order.booking.location}</div>
-                  <div className="oi-meta">{order.booking.date} • {order.booking.duration} {order.vehicle.unit === 'hr' ? 'hrs' : 'trips'}</div>
+                  <div className="oi-loc">Brief: {order.booking.location}</div>
+                  <div className="oi-meta">{order.booking.date} • qty {order.booking.duration}</div>
                 </div>
               </div>
               <div className="oi-right">

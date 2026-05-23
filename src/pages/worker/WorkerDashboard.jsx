@@ -2,9 +2,8 @@ import { useAuthStore } from '../../store/useAuthStore';
 import { useStore } from '../../store/useStore';
 import {
   HiStar, HiBriefcase, HiCheckCircle, HiCurrencyRupee,
-  HiLocationMarker, HiCalendar, HiUser, HiArrowRight,
+  HiLocationMarker, HiCalendar, HiUser, HiArrowRight, HiCloudUpload, HiPhotograph,
 } from 'react-icons/hi';
-import { MdDirectionsCar } from 'react-icons/md';
 import './Worker.css';
 
 export default function WorkerDashboard() {
@@ -20,7 +19,7 @@ export default function WorkerDashboard() {
 
   const STATS = [
     { Icon: HiStar,           val: `${user.rating}★`, label: 'Rating',      color: '#f59e0b' },
-    { Icon: HiBriefcase,      val: user.jobsDone + completedJobs.length, label: 'Total Jobs', color: '#3b82f6' },
+    { Icon: HiBriefcase,      val: user.jobsDone + completedJobs.length, label: 'Projects', color: '#3b82f6' },
     { Icon: HiCheckCircle,    val: completedJobs.length, label: 'On Platform', color: '#10b981' },
     { Icon: HiCurrencyRupee,  val: `₹${earnings.toLocaleString()}`, label: 'Earnings', color: '#8b5cf6' },
   ];
@@ -34,13 +33,12 @@ export default function WorkerDashboard() {
           <div>
             <h1>Hey, {user.name.split(' ')[0]}! 👋</h1>
             <p className="wh-vehicle">
-              <MdDirectionsCar style={{ width: 14, height: 14, verticalAlign: 'middle', marginRight: 4 }} />
               {user.vehicle}
             </p>
           </div>
         </div>
         <div className="avail-toggle">
-          <span>Availability:</span>
+          <span>Booking status:</span>
           <button
             className={`toggle-btn ${user.available ? 'on' : 'off'}`}
             onClick={() => updateWorkerAvailability(user.id, !user.available)}
@@ -66,7 +64,7 @@ export default function WorkerDashboard() {
       {/* Active Job */}
       {activeJob && (
         <div className="active-job-card">
-          <div className="aj-badge">🔴 Active Job</div>
+          <div className="aj-badge">Active Project</div>
           <h2>{activeJob.vehicle.name}</h2>
           <div className="aj-details">
             <div className="aj-row">
@@ -95,11 +93,28 @@ export default function WorkerDashboard() {
         </div>
       )}
 
-      {/* Job History */}
       <div className="worker-section">
-        <h2>Job History</h2>
+        <h2>Editor Dashboard</h2>
+        <div className="editor-tools-grid">
+          {[
+            { Icon: HiCheckCircle, title: 'Accept projects', text: 'Review incoming briefs and confirm your availability.' },
+            { Icon: HiCloudUpload, title: 'Upload work', text: 'Share rough cuts, revised versions, and final exports.' },
+            { Icon: HiCurrencyRupee, title: 'Track earnings', text: 'Monitor completed work, payouts, and pending invoices.' },
+            { Icon: HiPhotograph, title: 'Portfolio management', text: 'Keep reels, niches, pricing, and ratings fresh.' },
+          ].map(({ Icon, title, text }) => (
+            <div className="editor-tool" key={title}>
+              <Icon />
+              <strong>{title}</strong>
+              <span>{text}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="worker-section">
+        <h2>Project History</h2>
         {myOrders.length === 0 ? (
-          <div className="empty-msg">No jobs assigned yet. Stay online to receive bookings.</div>
+          <div className="empty-msg">No projects assigned yet. Stay online to receive bookings.</div>
         ) : (
           <div className="job-list">
             {myOrders.map(o => (

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { categories, allVehicles } from '../../data/vehicles';
-import { HiCube, HiChevronLeft, HiPencil } from 'react-icons/hi';
+import { HiChevronLeft, HiPencil } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import './Admin.css';
 
@@ -15,7 +15,7 @@ export default function AdminProducts() {
       <div className="admin-header">
         <div className="ah-with-back">
           <button className="back-icon-btn" onClick={() => navigate('/admin/more')}><HiChevronLeft /></button>
-          <div><h1>Products</h1><p>{allVehicles.length} vehicles listed</p></div>
+          <div><h1>Services</h1><p>{allVehicles.length} editor services listed</p></div>
         </div>
       </div>
 
@@ -34,7 +34,7 @@ export default function AdminProducts() {
         {filtered.map(v => (
           <div key={v.id} className="product-card">
             <div className="pc-img-wrap">
-              <img src={v.image} alt={v.name} className="pc-img" onError={e => { e.target.src = 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=70'; }} />
+              <img src={v.image} alt={v.name} className="pc-img" onError={e => { e.target.src = 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&q=70'; }} />
               <span className="pc-cat">{v.categoryLabel}</span>
             </div>
             <div className="pc-body">

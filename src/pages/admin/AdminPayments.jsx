@@ -51,7 +51,7 @@ export default function AdminPayments() {
       <div className="orders-table-wrap">
         <table className="admin-table full">
           <thead>
-            <tr><th>Order ID</th><th>Customer</th><th>Vehicle</th><th>Date</th><th>Amount</th><th>Status</th></tr>
+            <tr><th>Booking ID</th><th>Customer</th><th>Service</th><th>Date</th><th>Amount</th><th>Status</th></tr>
           </thead>
           <tbody>
             {filtered.length === 0 ? (
