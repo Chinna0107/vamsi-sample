@@ -9,7 +9,7 @@ import {
 import './Navbar.css';
 
 const NAV_LINKS = [
-  { label: 'Homepage', to: '/' },
+  { label: 'Home', to: '/' },
   { label: 'Quick Editors', to: '/quick-editors' },
   { label: 'Find Editors', to: '/browse' },
   { label: 'Services', to: '/services' },
@@ -60,7 +60,7 @@ export default function Navbar() {
         <div className="nav-right">
           <button className="contact-link" onClick={() => handleLink('/contact')}>Contact</button>
           {!user && (
-            <Link to="/login" className="btn-nav-primary">Signin</Link>
+            <Link to="/login" className="btn-nav-primary">Sign in</Link>
           )}
 
           {user && (
