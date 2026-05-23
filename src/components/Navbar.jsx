@@ -10,6 +10,7 @@ import './Navbar.css';
 
 const NAV_LINKS = [
   { label: 'Homepage', to: '/' },
+  { label: 'Quick Editors', to: '/quick-editors' },
   { label: 'Find Editors', to: '/browse' },
   { label: 'Services', to: '/services' },
   { label: 'Pricing', to: '/pricing' },

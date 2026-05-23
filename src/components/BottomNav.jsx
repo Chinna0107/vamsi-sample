@@ -4,13 +4,14 @@ import { useStore } from '../store/useStore';
 import {
   HiHome, HiSparkles, HiClipboardList, HiUser,
   HiChartBar, HiCollection, HiUsers, HiSearch,
-  HiCog, HiLocationMarker,
+  HiCog, HiLocationMarker, HiLightningBolt,
 } from 'react-icons/hi';
 import './BottomNav.css';
 
 const customerTabs = [
   { to: '/',       Icon: HiHome,          label: 'Home' },
   { to: '/browse', Icon: HiSparkles,      label: 'Editors' },
+  { to: '/quick-editors', Icon: HiLightningBolt, label: 'Quick' },
   { to: '/customer', Icon: HiClipboardList, label: 'Projects' },
   { to: '/login',  Icon: HiUser,          label: 'Account' },
 ];

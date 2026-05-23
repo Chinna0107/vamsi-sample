@@ -14,7 +14,7 @@ import CustomerDashboard from './pages/CustomerDashboard';
 import CustomerLayout from './pages/CustomerLayout';
 import CustomerChat from './pages/CustomerChat';
 import CustomerProgress from './pages/CustomerProgress';
-import { Contact, EditorDetails, Portfolio, Pricing, Services, Support } from './pages/MarketingPages';
+import { Contact, EditorDetails, Portfolio, Pricing, QuickEditors, Services, Support } from './pages/MarketingPages';
 import { useStore } from './store/useStore';
 
 import Login from './pages/auth/Login';
@@ -65,6 +65,7 @@ function Layout() {
         <Routes>
           {/* Public */}
           <Route path="/" element={<Home />} />
+          <Route path="/quick-editors" element={<QuickEditors />} />
           <Route path="/browse" element={<Browse />} />
           <Route path="/services" element={<Services />} />
           <Route path="/pricing" element={<Pricing />} />

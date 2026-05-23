@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   HiArrowRight, HiBadgeCheck, HiChatAlt2, HiCheckCircle, HiCloudUpload,
   HiClock, HiCurrencyRupee, HiLightningBolt, HiMail, HiPhone, HiPlay,
-  HiQuestionMarkCircle, HiShieldCheck, HiSparkles, HiStar, HiUsers,
+  HiQuestionMarkCircle, HiSearch, HiShieldCheck, HiSparkles, HiStar, HiUsers,
 } from 'react-icons/hi';
 import { categories } from '../data/vehicles';
 import { editors, findEditorById } from '../data/editors';
@@ -69,6 +70,80 @@ export function Pricing() {
             <button onClick={() => navigate('/browse')}>Choose editors <HiArrowRight /></button>
           </article>
         ))}
+      </div>
+    </PageShell>
+  );
+}
+
+export function QuickEditors() {
+  const navigate = useNavigate();
+  const [query, setQuery] = useState('');
+  const [submittedQuery, setSubmittedQuery] = useState('');
+  const onlineEditors = editors.filter(editor => editor.online);
+  const searchTerm = submittedQuery.trim().toLowerCase();
+  const visibleEditors = onlineEditors
+    .filter(editor => !searchTerm || [
+      editor.name,
+      editor.role,
+      editor.specialty,
+      editor.location,
+      editor.tools.join(' '),
+    ].join(' ').toLowerCase().includes(searchTerm))
+    .slice(0, 2);
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    setSubmittedQuery(query);
+  };
+
+  return (
+    <PageShell eyebrow="Quick editors" title="Online editors ready to take a project now.">
+      <form className="quick-search" onSubmit={handleSearch}>
+        <div className="quick-search-field">
+          <HiSearch />
+          <input
+            value={query}
+            onChange={event => setQuery(event.target.value)}
+            placeholder="Search online editors, tools, or specialty"
+          />
+        </div>
+        <button type="submit">Search</button>
+      </form>
+      <div className="quick-editor-summary">
+        <span><HiLightningBolt /> {onlineEditors.length} editors online now</span>
+        <button type="button" onClick={() => navigate('/browse')}>Find all editors <HiArrowRight /></button>
+      </div>
+      <div className="quick-editor-grid">
+        {visibleEditors.map(editor => (
+          <article className="portfolio-card quick-editor-card" key={editor.id}>
+            <div className="quick-editor-image">
+              <img src={editor.image} alt={editor.name} />
+              <span className="online-badge">Online now</span>
+            </div>
+            <div>
+              <span className="availability">{editor.availability}</span>
+              <h2>{editor.name}</h2>
+              <p>{editor.specialty}</p>
+              <div className="profile-stats">
+                <span><HiStar /> {editor.rating}</span>
+                <span><HiUsers /> {editor.projects} projects</span>
+                <span><HiClock /> {editor.turnaround}</span>
+              </div>
+              <div className="quick-editor-actions">
+                <button onClick={() => navigate(`/editors/${editor.id}`)}>View profile <HiArrowRight /></button>
+                <button className="secondary" onClick={() => navigate('/book/video-editor')}>Book now</button>
+              </div>
+            </div>
+          </article>
+        ))}
+        {visibleEditors.length === 0 && (
+          <article className="marketing-card quick-empty">
+            <HiSearch />
+            <h2>No online editor matched</h2>
+            <p>Try a broader specialty or open the full editor directory.</p>
+            <button onClick={() => navigate('/browse')}>Search all editors <HiArrowRight /></button>
+          </article>
+        )}
       </div>
     </PageShell>
   );
